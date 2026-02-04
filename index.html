@@ -9,6 +9,7 @@
 
 body{
 margin:0;
+height:100vh;
 background:linear-gradient(135deg,#ff9eb5,#ffc2d1);
 font-family:'Segoe UI';
 color:white;
@@ -72,19 +73,19 @@ max-width:700px;
 <h1>Tell me… what are you to me?</h1>
 
 <button onclick="message('You are my peace. The place my heart rests.')">
-🌙 My Peace
+ 💗 My Peace
 </button>
 
 <button onclick="message('My safest place in this chaotic world.')">
-❤️ My Safe Place
+🤍 My Safe Place
 </button>
 
 <button onclick="message('The most beautiful distraction.')">
-✨ My Favorite Notification
+🎀My Favorite Notification
 </button>
 
-<button onclick="message('Sweet chaos I never want to escape.')">
-🔥 My Chaos
+<button onclick="message('the one I never want to lose.')">
+💝My Everything 
 </button>
 
 <br>
@@ -119,15 +120,18 @@ today, tomorrow, and all the days after?
 
 // screen transition
 function next(id){
+
 document.querySelectorAll(".screen").forEach(s=>{
-s.classList.add("hidden");
+s.style.display="none";
 });
 
-document.getElementById(id).classList.remove("hidden");
+let target = document.getElementById(id);
+target.style.display="flex";
 
 if(id==="screen3"){
-startStory();
+setTimeout(startStory,300);
 }
+
 }
 
 
