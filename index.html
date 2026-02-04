@@ -3,69 +3,55 @@
 <head>
 <title>For Hana ❤️</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 
 body{
-  margin:0;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:linear-gradient(135deg,#ff9eb5,#ffc2d1);
-  font-family:'Segoe UI';
-  overflow:hidden;
+margin:0;
+background:linear-gradient(135deg,#ff9eb5,#ffc2d1);
+font-family:'Segoe UI';
+color:white;
+overflow:hidden;
 }
 
-.container{
-  text-align:center;
+.screen{
+position:absolute;
+width:100%;
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+transition:1s;
 }
 
-h1{
-  font-size:40px;
-  color:white;
+.hidden{
+opacity:0;
+pointer-events:none;
+transform:scale(1.1);
 }
 
 button{
-  padding:14px 24px;
-  margin:12px;
-  border:none;
-  border-radius:30px;
-  font-size:18px;
-  cursor:pointer;
-  transition:.3s;
+padding:14px 26px;
+margin:10px;
+border:none;
+border-radius:30px;
+font-size:18px;
+cursor:pointer;
+background:white;
+color:#ff4d6d;
+font-weight:600;
 }
 
-#yes{
-  background:#ff4d6d;
-  color:white;
+button:hover{
+transform:scale(1.05);
 }
 
-#yes:hover{
-  transform:scale(1.1);
-}
-
-#no{
-  background:white;
-}
-
-/* Floating hearts */
-
-.heart{
-  position:absolute;
-  color:white;
-  font-size:20px;
-  animation:float 6s linear infinite;
-}
-
-@keyframes float{
-  from{
-    transform:translateY(100vh);
-    opacity:1;
-  }
-  to{
-    transform:translateY(-10vh);
-    opacity:0;
-  }
+h1{
+max-width:700px;
 }
 
 </style>
@@ -73,51 +59,163 @@ button{
 
 <body>
 
-<div class="container">
-<h1>Hey Hana ❤️<br>Will you be my Valentine?</h1>
 
-<button id="yes" onclick="love()">YES OF COURSE 💕</button>
-
-<button id="no" onmouseover="move()">NO 😝</button>
+<!-- SCREEN 1 -->
+<div id="screen1" class="screen">
+<h1>Before you continue...<br>This little world was made only for you ❤️</h1>
+<button onclick="next('screen2')">Enter</button>
 </div>
 
 
-<!-- Music -->
-<audio autoplay loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b7b6d7b9.mp3">
-</audio>
+<!-- SCREEN 2 -->
+<div id="screen2" class="screen hidden">
+<h1>Tell me… what are you to me?</h1>
+
+<button onclick="message('You are my peace. The place my heart rests.')">
+🌙 My Peace
+</button>
+
+<button onclick="message('My safest place in this chaotic world.')">
+❤️ My Safe Place
+</button>
+
+<button onclick="message('The most beautiful distraction.')">
+✨ My Favorite Notification
+</button>
+
+<button onclick="message('Sweet chaos I never want to escape.')">
+🔥 My Chaos
+</button>
+
+<br>
+<button onclick="next('screen3')">Continue →</button>
+</div>
+
+
+<!-- SCREEN 3 -->
+<div id="screen3" class="screen hidden">
+<h1 id="story"></h1>
+<button onclick="next('screen4')" style="display:none;" id="continueBtn">
+Continue
+</button>
+</div>
+
+
+<!-- FINAL SCREEN -->
+<div id="screen4" class="screen hidden">
+<h1>
+So tell me…<br><br>
+Will you let me be the reason behind your smile…  
+today, tomorrow, and all the days after?
+</h1>
+
+<button onclick="celebrate()">💍 Yes — Always</button>
+<button onclick="celebrate()">🥺 I already am</button>
+</div>
+
+
 
 <script>
 
-// Moving NO button
-function move(){
-  const btn=document.getElementById('no');
+// screen transition
+function next(id){
+document.querySelectorAll(".screen").forEach(s=>{
+s.classList.add("hidden");
+});
 
-  btn.style.position='absolute';
-  btn.style.top=Math.random()*80+'%';
-  btn.style.left=Math.random()*80+'%';
+document.getElementById(id).classList.remove("hidden");
+
+if(id==="screen3"){
+startStory();
+}
 }
 
-// YES message
-function love(){
-  alert("You just made me the happiest boy alive ❤️\n\nI promise to annoy you, protect you, and love you forever.");
+
+// choice message
+function message(text){
+alert(text);
 }
 
-// Floating hearts
-setInterval(()=>{
-  const heart=document.createElement("div");
-  heart.classList.add("heart");
-  heart.innerHTML="❤️";
-  heart.style.left=Math.random()*100+"vw";
-  heart.style.fontSize=(Math.random()*20+10)+"px";
 
-  document.body.appendChild(heart);
+// story typing effect
+const lines = [
+"In a world of billions… somehow my heart learned your name.",
+"You didn’t just enter my life… you made it softer.",
+"Every smile of yours rewrites my entire day.",
+"And if I had to choose again… it would still be you."
+];
 
-  setTimeout(()=>{
-    heart.remove();
-  },6000);
+let i=0;
 
-},300);
+function startStory(){
+
+const story=document.getElementById("story");
+const btn=document.getElementById("continueBtn");
+
+function typeLine(){
+
+if(i<lines.length){
+
+let text="";
+let line=lines[i];
+let j=0;
+
+let typing=setInterval(()=>{
+
+text+=line[j];
+story.innerHTML=text;
+j++;
+
+if(j>=line.length){
+clearInterval(typing);
+i++;
+
+setTimeout(typeLine,1200);
+}
+
+},40);
+
+}else{
+btn.style.display="block";
+}
+
+}
+
+typeLine();
+}
+
+
+
+// celebration hearts
+function celebrate(){
+
+for(let i=0;i<120;i++){
+
+let heart=document.createElement("div");
+
+heart.innerHTML="💖";
+heart.style.position="absolute";
+heart.style.left=Math.random()*100+"vw";
+heart.style.top="-10px";
+heart.style.fontSize=(Math.random()*20+20)+"px";
+
+document.body.appendChild(heart);
+
+let fall=setInterval(()=>{
+heart.style.top=(heart.offsetTop+5)+"px";
+},20);
+
+setTimeout(()=>{
+clearInterval(fall);
+heart.remove();
+},3000);
+}
+
+setTimeout(()=>{
+alert("You just made me the happiest man alive ❤️");
+},500);
+
+}
 
 </script>
 
